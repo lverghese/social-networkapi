@@ -31,9 +31,9 @@ const ReactionSchema = new Schema(
   }
 );
 
-const CommentSchema = new Schema({
+const ThoughtSchema = new Schema({
   
-  commentBody: {
+  thoughtText: {
     type: String,
     required: true,
     trim: true
@@ -58,10 +58,12 @@ const CommentSchema = new Schema({
 });
 
 
+//virtual called reaction count that 
+//retrieves the length of the thought's reactions array field on query
+ThoughtSchema.virtual('reactionCount').get(function() {
+  return this.reactions.length
+})
 
+const Thought = model('Thought', ThoughtSchema);
 
-
-
-const Comment = model('Comment', CommentSchema);
-
-module.exports = Comment;
+module.exports = Thought;
