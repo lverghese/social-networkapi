@@ -16,5 +16,9 @@
   "bugs": {
     "url": "https://github.com/lverghese/social-networkapi/issues"
   },
-  "homepage": "https://github.com/lverghese/social-networkapi#readme"
+  "homepage": "https://github.com/lverghese/social-networkapi#readme",
+  "dependencies": {
+    "express": "^4.17.1",
+    "mongoose": "^6.0.11"
+  }
 }
