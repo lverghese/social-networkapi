@@ -58,6 +58,15 @@ const userController = {
         User.findOneAndDelete({ _id: params.id })
         .then(dbUserData => res.json(dbUserData))
         .catch(err => res.json(err));
+    },
+
+    //add friend to users friend list
+    addFriend({ params }, res) {
+
+    },
+
+    removeFriend({ params }, res) {
+        
     }
 
 };
