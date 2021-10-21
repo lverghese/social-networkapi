@@ -2,15 +2,19 @@ const { User } = require('../models');
 
 const userController = {
     //get all users
-    getAllUser(req, res) {
-        User.find({})
-      .select('-__v')
-      .sort({ _id: -1 })
-      .then(dbUserData => res.json(dbUserData))
-      .catch(err => {
-        console.log(err);
-        res.sendStatus(400).json(err);
-      });
+    getAllUsers(req, res) {
+      User.find({})
+        .populate({
+          path: "thoughts",
+          select: "-__v",
+        })
+        .select("-__v")
+        .sort({ _id: -1 })
+        .then((dbUserData) => res.json(dbUserData))
+        .catch((err) => {
+          console.log(err);
+          res.status(400).json(err);
+        });
     },
 
     //get User by ID with thoughts and friends
@@ -25,10 +29,17 @@ const userController = {
               select: '-__v'
           })
          .select('-__v')
-         .then(dbUserData => res.json(dbUserData))
+         .then((dbUserData) => {
+          // If no user is found
+          if (!dbUserData) {
+            res.status(404).json({ message: "No user found with this ID" });
+            return;
+          }
+          res.json(dbUserData);
+        })
          .catch(err => {
              console.log(err)
-             res.status(500).json(err)
+             res.status(400).json(err)
       });
    },
 
@@ -41,7 +52,7 @@ const userController = {
 
     //update a user
     updateUser({ params, body}, res) {
-        User.findOneAndUpdate({ _id: params.id }, body, { new: true, runValidators: true })
+        User.findOneAndUpdate({ _id: params.id }, body, { new: true })
       .then(dbUserData => {
         if (!dbUserData) {
           res.status(404).json({ message: 'No user found with this id!' });
